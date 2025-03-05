@@ -1,12 +1,8 @@
 import 'dart:math';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 
-import 'package:flutter_ume_kit_ui/util/binding_ambiguate.dart';
 import '../theme.dart';
 import '../utils.dart';
 import 'color_picker.dart';
@@ -14,6 +10,8 @@ import 'eyedrop/eye_dropper_layer.dart';
 import 'picker_config.dart' if (dart.library.js) 'picker_config_web.dart';
 
 const _buttonSize = 48.0;
+
+T? bindingAmbiguate<T>(T? value) => value;
 
 class ColorButton extends StatefulWidget {
   final Color color;

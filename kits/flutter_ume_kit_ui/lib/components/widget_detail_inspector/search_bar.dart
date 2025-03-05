@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ume_kit_ui/util/binding_ambiguate.dart';
 import 'icon.dart' as icon;
-import 'dart:convert';
 
 typedef void OnSubmitHandle(String text);
 typedef void OnChangeHandle(String text);
@@ -16,20 +16,20 @@ class SearchBar extends StatefulWidget {
   final String placeHolder;
   final bool autofocus;
   final bool enabled;
-  final String cancelText;
-  final Color cursorColor;
-  final Color searchIconColor;
+  final String? cancelText;
+  final Color? cursorColor;
+  final Color? searchIconColor;
   final Brightness keyboardAppearance;
   final BarStyle style;
-  final Widget right;
+  final Widget? right;
   final int inputCharactersLength;
-  final Function rightAction;
-  final OnChangeHandle onChangeHandle;
-  final OnSubmitHandle onSubmitHandle;
-  final OnFocusChangeHandle onFocusChangeHandle;
+  final Function? rightAction;
+  final OnChangeHandle? onChangeHandle;
+  final OnSubmitHandle? onSubmitHandle;
+  final OnFocusChangeHandle? onFocusChangeHandle;
 
   SearchBar({
-    Key key,
+    Key? key,
     this.placeHolder = '请输入要搜索的内容',
     this.autofocus = false,
     this.enabled = true,
@@ -60,14 +60,14 @@ class _SearchInputState extends State<SearchBar> {
     super.initState();
     _focusNode.addListener(() {
       if (widget.onFocusChangeHandle != null) {
-        widget.onFocusChangeHandle(_focusNode.hasFocus);
+        widget.onFocusChangeHandle!(_focusNode.hasFocus);
       }
     });
   }
 
   @override
   void dispose() {
-    _inputController?.dispose();
+    _inputController.dispose();
     super.dispose();
   }
 
@@ -83,7 +83,7 @@ class _SearchInputState extends State<SearchBar> {
   void _inputSubmitHandle(String query) {
     _unfocus();
     if (widget.onSubmitHandle is OnSubmitHandle) {
-      widget.onSubmitHandle(query);
+      widget.onSubmitHandle!(query);
     }
   }
 
@@ -95,7 +95,7 @@ class _SearchInputState extends State<SearchBar> {
       });
     }
     if (widget.onChangeHandle != null) {
-      widget.onChangeHandle(query);
+      widget.onChangeHandle!(query);
     }
   }
 
@@ -103,7 +103,7 @@ class _SearchInputState extends State<SearchBar> {
     return Container(
         margin: const EdgeInsets.only(right: 11.0),
         child: Image.memory(
-          base64.decode(icon.searchIconData),
+          icon.iconBytes,
           width: 16,
           height: 16,
         ));
@@ -115,7 +115,7 @@ class _SearchInputState extends State<SearchBar> {
     }
     return GestureDetector(
       onTap: () {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
+        bindingAmbiguate(WidgetsBinding.instance)!.addPostFrameCallback((_) {
           _inputController.clear();
           _focus();
         });
@@ -123,8 +123,7 @@ class _SearchInputState extends State<SearchBar> {
       },
       child: Container(
           margin: EdgeInsets.only(left: 16.0),
-          child: Image.memory(base64.decode(icon.searchClearIconData),
-              width: 16, height: 16)),
+          child: Image.memory(icon.iconBytes, width: 16, height: 16)),
     );
   }
 
@@ -148,8 +147,7 @@ class _SearchInputState extends State<SearchBar> {
         autofocus: widget.autofocus,
         maxLines: 1,
         onSubmitted: _inputSubmitHandle,
-        // ignore: deprecated_member_use
-        maxLengthEnforced: false,
+        maxLengthEnforcement: MaxLengthEnforcement.none,
         style: TextStyle(
           fontSize: 15.0,
           color: Colors.black,
@@ -214,7 +212,7 @@ class _SearchInputState extends State<SearchBar> {
       } else {
         right = Padding(
             padding: const EdgeInsets.only(left: 20.0, right: 20),
-            child: Text(widget.cancelText,
+            child: Text(widget.cancelText!,
                 style: TextStyle(
                     fontSize: 15.0,
                     fontWeight: FontWeight.bold,
@@ -225,7 +223,7 @@ class _SearchInputState extends State<SearchBar> {
         onTap: () {
           _inputSubmitHandle(_inputController.text);
           if (widget.rightAction != null) {
-            widget.rightAction();
+            widget.rightAction!();
           }
         },
         child: right);

@@ -24,15 +24,14 @@ class PluggableMessageService {
     clearListener();
 
     PluginManager.instance.pluginsMap.values
-        .where((element) => element is PluggableWithStream)
+        .whereType<PluggableWithStream>()
         .forEach((element) {
-      final pluggable = element as PluggableWithStream;
+      final pluggable = element;
       // ignore: cancel_subscriptions
       final subscription = pluggable.stream.where((event) {
-        if (pluggable.streamFilter == null) return true;
         return pluggable.streamFilter(event);
       }).listen((event) {
-        _pluggableMessageData[pluggable.name].increaseCounter();
+        _pluggableMessageData[pluggable.name]!.increaseCounter();
         _sendSink(pluggable);
       });
       _pluggableMessageData.update(pluggable.name, (old) {
@@ -42,9 +41,9 @@ class PluggableMessageService {
     });
   }
 
-  int countAll(List<Pluggable> pluggable) {
+  int countAll(List<Pluggable?> pluggable) {
     int result = 0;
-    pluggable.map((e) => e.name).toSet().forEach((element) {
+    pluggable.map((e) => e!.name).toSet().forEach((element) {
       result += (_pluggableMessageData[element]?.count ?? 0);
     });
     return result;
@@ -60,7 +59,7 @@ class PluggableMessageService {
 
   void clearListener() {
     _pluggableMessageData.values.forEach((messageInfo) {
-      messageInfo?.subscription?.cancel();
+      messageInfo.subscription?.cancel();
     });
     _pluggableMessageData.clear();
   }
@@ -72,9 +71,9 @@ class PluggableMessageService {
 }
 
 class PluggableMessageInfo {
-  StreamSubscription<dynamic> _subscription;
-  int _count;
-  StreamSubscription<dynamic> get subscription => _subscription;
+  StreamSubscription<dynamic>? _subscription;
+  int _count = 0;
+  StreamSubscription<dynamic>? get subscription => _subscription;
   int get count => _count;
 
   PluggableMessageInfo.subscription(StreamSubscription<dynamic> subscription) {

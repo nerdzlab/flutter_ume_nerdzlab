@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ume/core/ui/dragable_widget.dart';
 
@@ -17,7 +16,7 @@ void main() {
         dragCompletion: (dataList) {
           moveCount++;
         },
-        itemBuilder: (context, data) {
+        itemBuilder: (context, dynamic data) {
           return GestureDetector(
             onTap: () {},
             behavior: HitTestBehavior.opaque,

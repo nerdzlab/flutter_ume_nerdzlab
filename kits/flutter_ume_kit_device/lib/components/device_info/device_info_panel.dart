@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/material.dart';
 import 'package:platform/platform.dart';
@@ -14,11 +13,10 @@ class DeviceInfoPanel extends StatefulWidget implements Pluggable {
   _DeviceInfoPanelState createState() => _DeviceInfoPanelState();
 
   @override
-  Widget buildWidget(BuildContext context) => this;
+  Widget buildWidget(BuildContext? context) => this;
 
   @override
-  ImageProvider<Object> get iconImageProvider =>
-      MemoryImage(base64Decode(icon.iconData));
+  ImageProvider<Object> get iconImageProvider => MemoryImage(icon.iconBytes);
 
   @override
   String get name => 'DeviceInfo';

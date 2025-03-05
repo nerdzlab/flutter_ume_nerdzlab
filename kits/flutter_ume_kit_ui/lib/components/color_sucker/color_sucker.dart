@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
@@ -12,7 +11,7 @@ class ColorSucker extends StatefulWidget implements Pluggable {
   final Size size;
 
   const ColorSucker({
-    Key key,
+    Key? key,
     this.scale = 10.0,
     this.size = const Size(100, 100),
   }) : super(key: key);
@@ -21,7 +20,7 @@ class ColorSucker extends StatefulWidget implements Pluggable {
   _ColorSuckerState createState() => _ColorSuckerState();
 
   @override
-  Widget buildWidget(BuildContext context) => this;
+  Widget buildWidget(BuildContext? context) => this;
 
   @override
   String get name => 'ColorSucker';
@@ -33,20 +32,19 @@ class ColorSucker extends StatefulWidget implements Pluggable {
   void onTrigger() {}
 
   @override
-  ImageProvider<Object> get iconImageProvider =>
-      MemoryImage(base64Decode(icon.iconData));
+  ImageProvider<Object> get iconImageProvider => MemoryImage(icon.iconBytes);
 }
 
 class _ColorSuckerState extends State<ColorSucker> {
-  Size _magnifierSize;
-  double _scale;
-  BorderRadius _radius;
+  late Size _magnifierSize;
+  double? _scale;
+  BorderRadius? _radius;
   Color _currentColor = Colors.white;
-  img.Image _snapshot;
+  img.Image? _snapshot;
   Offset _magnifierPosition = Offset.zero;
   double _toolBarY = 60.0;
   Matrix4 _matrix = Matrix4.identity();
-  Size _windowSize;
+  late Size _windowSize;
   bool _excuting = false;
 
   @override
@@ -111,10 +109,13 @@ class _ColorSuckerState extends State<ColorSucker> {
   Future<void> _captureScreen() async {
     try {
       RenderRepaintBoundary boundary =
-          rootKey.currentContext.findRenderObject();
+          rootKey.currentContext!.findRenderObject() as RenderRepaintBoundary;
       ui.Image image = await boundary.toImage();
-      ByteData byteData =
+      ByteData? byteData =
           await image.toByteData(format: ui.ImageByteFormat.png);
+      if (byteData == null) {
+        return;
+      }
       Uint8List pngBytes = byteData.buffer.asUint8List();
       _snapshot = img.decodeImage(pngBytes);
       _excuting = false;
@@ -128,15 +129,11 @@ class _ColorSuckerState extends State<ColorSucker> {
     if (_snapshot == null) return;
     double px = globalPosition.dx;
     double py = globalPosition.dy;
-    int pixel32 = _snapshot.getPixelSafe(px.toInt(), py.toInt());
-    int hex = _abgrToArgb(pixel32);
-    _currentColor = Color(hex);
-  }
 
-  int _abgrToArgb(int argbColor) {
-    int r = (argbColor >> 16) & 0xFF;
-    int b = argbColor & 0xFF;
-    return (argbColor & 0xFF00FF00) | (b << 16) | r;
+    img.Pixel pixel = _snapshot!.getPixelSafe(px.toInt(), py.toInt());
+
+    _currentColor = Color.fromARGB(
+        pixel.a.toInt(), pixel.r.toInt(), pixel.g.toInt(), pixel.b.toInt());
   }
 
   @override
@@ -176,7 +173,7 @@ class _ColorSuckerState extends State<ColorSucker> {
           Container(
             margin: const EdgeInsets.only(left: 40, right: 16),
             child:
-                Text("#${_currentColor.value.toRadixString(16)?.substring(2)}",
+                Text("#${_currentColor.value.toRadixString(16).substring(2)}",
                     style: const TextStyle(
                       fontSize: 25,
                       color: Colors.grey,
@@ -198,7 +195,7 @@ class _ColorSuckerState extends State<ColorSucker> {
           left: _magnifierPosition.dx,
           top: _magnifierPosition.dy,
           child: ClipRRect(
-            borderRadius: _radius,
+            borderRadius: _radius!,
             child: GestureDetector(
               onPanStart: _onPanStart,
               onPanEnd: _onPanEnd,
@@ -218,7 +215,7 @@ class _ColorSuckerState extends State<ColorSucker> {
                   height: _magnifierSize.height,
                   width: _magnifierSize.width,
                   decoration: BoxDecoration(
-                      borderRadius: _radius,
+                      borderRadius: _radius!,
                       border: Border.all(color: Colors.grey, width: 3)),
                 ),
               ),

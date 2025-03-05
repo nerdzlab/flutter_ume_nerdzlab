@@ -8,8 +8,8 @@ import 'package:flutter_ume/util/constants.dart';
 
 class InspectorOverlay extends LeafRenderObjectWidget {
   const InspectorOverlay(
-      {Key key,
-      @required this.selection,
+      {Key? key,
+      required this.selection,
       this.needEdges = true,
       this.needDescription = true})
       : super(key: key);
@@ -37,11 +37,10 @@ class InspectorOverlay extends LeafRenderObjectWidget {
 
 class _RenderInspectorOverlay extends RenderBox {
   _RenderInspectorOverlay({
-    @required InspectorSelection selection,
-    @required this.needDescription,
-    @required this.needEdges,
-  })  : _selection = selection,
-        assert(selection != null);
+    required InspectorSelection selection,
+    required this.needDescription,
+    required this.needEdges,
+  }) : _selection = selection;
 
   final bool needDescription;
   final bool needEdges;
@@ -80,12 +79,11 @@ class _RenderInspectorOverlay extends RenderBox {
 
 class _InspectorOverlayLayer extends Layer {
   _InspectorOverlayLayer({
-    @required this.overlayRect,
-    @required this.selection,
-    @required this.needDescription,
-    @required this.needEdges,
-  })  : assert(overlayRect != null),
-        assert(selection != null);
+    required this.overlayRect,
+    required this.selection,
+    required this.needDescription,
+    required this.needEdges,
+  });
 
   InspectorSelection selection;
 
@@ -95,19 +93,19 @@ class _InspectorOverlayLayer extends Layer {
 
   final Rect overlayRect;
 
-  _InspectorOverlayRenderState _lastState;
+  _InspectorOverlayRenderState? _lastState;
 
-  ui.Picture _picture;
+  late ui.Picture _picture;
 
-  TextPainter _textPainter;
-  double _textPainterMaxWidth;
+  TextPainter? _textPainter;
+  double? _textPainterMaxWidth;
 
   @override
   void addToScene(ui.SceneBuilder builder, [Offset layerOffset = Offset.zero]) {
     if (!selection.active) return;
 
     final _SelectionInfo info = _SelectionInfo(selection);
-    final RenderObject selected = info.renderObject;
+    final RenderObject? selected = info.renderObject;
     final List<_TransformedRect> candidates = <_TransformedRect>[];
     for (RenderObject candidate in selection.candidates) {
       if (candidate == selected || !candidate.attached) continue;
@@ -117,7 +115,7 @@ class _InspectorOverlayLayer extends Layer {
     final _InspectorOverlayRenderState state = _InspectorOverlayRenderState(
       selectionInfo: info,
       overlayRect: overlayRect,
-      selected: _TransformedRect(selected),
+      selected: _TransformedRect(selected!),
       textDirection: TextDirection.ltr,
       candidates: candidates,
     );
@@ -185,9 +183,9 @@ class _InspectorOverlayLayer extends Layer {
     canvas.save();
     final double maxWidth =
         size.width - 2 * (kScreenEdgeMargin + kTooltipPadding);
-    final TextSpan textSpan = _textPainter?.text;
+    final TextSpan? textSpan = _textPainter?.text as TextSpan?;
     if (_textPainter == null ||
-        textSpan.text != message ||
+        textSpan!.text != message ||
         _textPainterMaxWidth != maxWidth) {
       _textPainterMaxWidth = maxWidth;
       _textPainter = TextPainter()
@@ -200,7 +198,7 @@ class _InspectorOverlayLayer extends Layer {
         ..layout(maxWidth: maxWidth);
     }
 
-    final Size tooltipSize = _textPainter.size +
+    final Size tooltipSize = _textPainter!.size +
         const Offset(kTooltipPadding * 2, kTooltipPadding * 2);
     final Offset tipOffset = positionDependentBox(
       size: size,
@@ -234,62 +232,65 @@ class _InspectorOverlayLayer extends Layer {
       Offset(wedgeX, wedgeY + (tooltipBelow ? -wedgeSize : wedgeSize)),
     ];
     canvas.drawPath(Path()..addPolygon(wedge, true), tooltipBackground);
-    _textPainter.paint(
+    _textPainter!.paint(
         canvas, tipOffset + const Offset(kTooltipPadding, kTooltipPadding));
     canvas.restore();
   }
 
   @override
   @protected
-  bool findAnnotations<S>(
-    AnnotationResult<S> result,
-    Offset localPosition, {
-    bool onlyFirst,
-  }) {
+  bool findAnnotations<S extends Object>(
+      AnnotationResult<S> result, Offset localPosition,
+      {required bool onlyFirst}) {
     return false;
   }
 }
 
 class _SelectionInfo {
-  const _SelectionInfo(this.selection) : assert(selection != null);
+  const _SelectionInfo(this.selection);
   final InspectorSelection selection;
 
-  RenderObject get renderObject => selection.current;
+  RenderObject? get renderObject => selection.current;
 
-  Element get element => selection.currentElement;
+  Element? get element => selection.currentElement;
 
-  Map get jsonInfo {
+  Map? get jsonInfo {
+    if (renderObject == null) return null;
+    final widgetId = WidgetInspectorService.instance
+        // ignore: invalid_use_of_protected_member
+        .toId(renderObject!.toDiagnosticsNode(), '');
+    if (widgetId == null) return null;
     String infoStr =
-        WidgetInspectorService.instance.getSelectedSummaryWidget(null, null);
+        WidgetInspectorService.instance.getSelectedSummaryWidget(widgetId, '');
     return json.decode(infoStr);
   }
 
-  String get filePath {
-    final f = (jsonInfo != null && jsonInfo.containsKey('creationLocation'))
-        ? jsonInfo['creationLocation']['file']
+  String? get filePath {
+    final f = (jsonInfo != null && jsonInfo!.containsKey('creationLocation'))
+        ? jsonInfo!['creationLocation']['file']
         : '';
     return f;
   }
 
-  int get line {
-    final l = (jsonInfo != null && jsonInfo.containsKey('creationLocation'))
-        ? jsonInfo['creationLocation']['line']
+  int? get line {
+    final l = (jsonInfo != null && jsonInfo!.containsKey('creationLocation'))
+        ? jsonInfo!['creationLocation']['line']
         : 0;
     return l;
   }
 
   String get message {
-    return '''${element.toStringShort()}\nsize: ${renderObject.paintBounds.size}\nfilePath: $filePath\nline: $line''';
+    return '''${element!.toStringShort()}\nsize: ${renderObject!.paintBounds.size}\nfilePath: $filePath\nline: $line''';
   }
 }
 
 class _InspectorOverlayRenderState {
   _InspectorOverlayRenderState({
-    @required this.overlayRect,
-    @required this.selected,
-    @required this.candidates,
-    @required this.textDirection,
-    @required this.selectionInfo,
+    required this.overlayRect,
+    required this.selected,
+    required this.candidates,
+    required this.textDirection,
+    required this.selectionInfo,
   });
 
   final Rect overlayRect;
@@ -309,7 +310,8 @@ class _InspectorOverlayRenderState {
   }
 
   @override
-  int get hashCode => hashValues(overlayRect, selected, hashList(candidates));
+  int get hashCode =>
+      Object.hash(overlayRect, selected, Object.hashAll(candidates));
 }
 
 class _TransformedRect {
@@ -328,5 +330,5 @@ class _TransformedRect {
   }
 
   @override
-  int get hashCode => hashValues(rect, transform);
+  int get hashCode => Object.hash(rect, transform);
 }

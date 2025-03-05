@@ -58,9 +58,12 @@ void main() {
     });
     test('Getting Instances.', () async {
       dynamic e;
-      ServiceWrapper().getInstances('', 0).catchError((error) {
-        e = error;
-      }).whenComplete(() => expect(e, isException));
+      try {
+        await ServiceWrapper().getInstances('', 0);
+      } catch (exception) {
+        e = exception;
+      }
+      expect(e, isException);
     });
     test('Getting Stack.', () async {
       final vm = await ServiceWrapper().getStack();
@@ -68,16 +71,22 @@ void main() {
     });
     test('Getting Object.', () async {
       dynamic e;
-      ServiceWrapper().getObject('', offset: 0, count: 0).catchError((error) {
-        e = error;
-      }).whenComplete(() => expect(e, isException));
+      try {
+        await ServiceWrapper().getObject('', offset: 0, count: 0);
+      } catch (exception) {
+        e = exception;
+      }
+      expect(e, isException);
     });
 
     test('Getting InboundReferences.', () async {
       dynamic e;
-      ServiceWrapper().getInboundReferences('').catchError((error) {
-        e = error;
-      }).whenComplete(() => expect(e, isException));
+      try {
+        await ServiceWrapper().getInboundReferences('');
+      } catch (exception) {
+        e = exception;
+      }
+      expect(e, isException);
     });
     test('Getting ClassHeapStats.', () async {
       final vm = await ServiceWrapper().getClassHeapStats();

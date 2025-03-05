@@ -3,11 +3,10 @@
 // found in the LICENSE file.
 
 import 'dart:math' as math;
+import 'dart:ui' as ui show Gradient, TextBox, lerpDouble, Color;
 import 'dart:typed_data';
-import 'dart:ui' as ui show Gradient, TextBox, lerpDouble;
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart'
     hide FlutterLogo, FlutterLogoDecoration, FlutterLogoStyle;
 
@@ -24,7 +23,7 @@ class FlutterLogo extends StatelessWidget {
   ///
   /// The [size] defaults to the value given by the current [IconTheme].
   const FlutterLogo({
-    Key key,
+    Key? key,
     this.size,
     this.colors,
     this.textColor = const Color(0xFF616161),
@@ -40,7 +39,7 @@ class FlutterLogo extends StatelessWidget {
   /// Defaults to the current [IconTheme] size, if any. If there is no
   /// [IconTheme], or it does not specify an explicit size, then it defaults to
   /// 24.0.
-  final double size;
+  final double? size;
 
   /// The color swatch to use to paint the logo, [Colors.blue] by default.
   ///
@@ -51,7 +50,7 @@ class FlutterLogo extends StatelessWidget {
   /// In extreme cases where none of those four color schemes will work,
   /// [Colors.pink], [Colors.purple], or [Colors.cyan] swatches can be used.
   /// These are Flutter's tertiary colors.
-  final MaterialColor colors;
+  final MaterialColor? colors;
 
   /// The color used to paint the "Flutter" text on the logo, if [style] is
   /// [FlutterLogoStyle.horizontal] or [FlutterLogoStyle.stacked]. The
@@ -74,7 +73,7 @@ class FlutterLogo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final IconThemeData iconTheme = IconTheme.of(context);
-    final double iconSize = size ?? iconTheme.size;
+    final double? iconSize = size ?? iconTheme.size;
     final MaterialColor logoColors = colors ?? Colors.blue;
     return AnimatedContainer(
       width: iconSize,
@@ -116,17 +115,12 @@ class FlutterLogoDecoration extends Decoration {
   /// The [lightColor], [darkColor], [textColor], [style], and [margin]
   /// arguments must not be null.
   const FlutterLogoDecoration({
-    this.lightColor = const Color(0xFF42A5F5), // Colors.blue[400]
-    this.darkColor = const Color(0xFF0D47A1), // Colors.blue[900]
-    this.textColor = const Color(0xFF616161),
+    ui.Color this.lightColor = const Color(0xFF42A5F5), // Colors.blue[400]
+    ui.Color this.darkColor = const Color(0xFF0D47A1), // Colors.blue[900]
+    ui.Color this.textColor = const Color(0xFF616161),
     this.style = FlutterLogoStyle.markOnly,
-    this.margin = EdgeInsets.zero,
-  })  : assert(lightColor != null),
-        assert(darkColor != null),
-        assert(textColor != null),
-        assert(style != null),
-        assert(margin != null),
-        _position = identical(style, FlutterLogoStyle.markOnly)
+    EdgeInsets this.margin = EdgeInsets.zero,
+  })  : _position = identical(style, FlutterLogoStyle.markOnly)
             ? 0.0
             : identical(style, FlutterLogoStyle.horizontal)
                 ? 1.0
@@ -150,18 +144,18 @@ class FlutterLogoDecoration extends Decoration {
   /// In extreme cases where none of those four color schemes will work,
   /// [material.Colors.pink], [material.Colors.purple], or
   /// [material.Colors.cyan] can be used. These are Flutter's tertiary colors.
-  final Color lightColor;
+  final Color? lightColor;
 
   /// The darker of the two colors used to paint the logo.
   ///
   /// See [lightColor] for more information about selecting the logo's colors.
-  final Color darkColor;
+  final Color? darkColor;
 
   /// The color used to paint the "Flutter" text on the logo, if [style] is
   /// [FlutterLogoStyle.horizontal] or [FlutterLogoStyle.stacked]. The
   /// appropriate color is `const Color(0xFF616161)` (a medium gray), against a
   /// white background.
-  final Color textColor;
+  final Color? textColor;
 
   /// Whether and where to draw the "Flutter" text. By default, only the logo
   /// itself is drawn.
@@ -170,7 +164,7 @@ class FlutterLogoDecoration extends Decoration {
   final FlutterLogoStyle style;
 
   /// How far to inset the logo from the edge of the container.
-  final EdgeInsets margin;
+  final EdgeInsets? margin;
 
   // The following are set when lerping, to represent states that can't be
   // represented by the constructor.
@@ -187,11 +181,8 @@ class FlutterLogoDecoration extends Decoration {
     assert(lightColor != null &&
         darkColor != null &&
         textColor != null &&
-        style != null &&
         margin != null &&
-        _position != null &&
         _position.isFinite &&
-        _opacity != null &&
         _opacity >= 0.0 &&
         _opacity <= 1.0);
     return true;
@@ -213,19 +204,18 @@ class FlutterLogoDecoration extends Decoration {
   /// See also:
   ///
   ///  * [Decoration.lerp], which interpolates between arbitrary decorations.
-  static FlutterLogoDecoration lerp(
-      FlutterLogoDecoration a, FlutterLogoDecoration b, double t) {
-    assert(t != null);
+  static FlutterLogoDecoration? lerp(
+      FlutterLogoDecoration? a, FlutterLogoDecoration? b, double t) {
     assert(a == null || a.debugAssertIsValid());
     assert(b == null || b.debugAssertIsValid());
     if (a == null && b == null) return null;
     if (a == null) {
       return FlutterLogoDecoration._(
-        b.lightColor,
+        b!.lightColor,
         b.darkColor,
         b.textColor,
         b.style,
-        b.margin * t,
+        b.margin! * t,
         b._position,
         b._opacity * t.clamp(0.0, 1.0),
       );
@@ -236,7 +226,7 @@ class FlutterLogoDecoration extends Decoration {
         a.darkColor,
         a.textColor,
         a.style,
-        a.margin * t,
+        a.margin! * t,
         a._position,
         a._opacity * (1.0 - t).clamp(0.0, 1.0),
       );
@@ -255,33 +245,33 @@ class FlutterLogoDecoration extends Decoration {
   }
 
   @override
-  FlutterLogoDecoration lerpFrom(Decoration a, double t) {
+  FlutterLogoDecoration? lerpFrom(Decoration? a, double t) {
     assert(debugAssertIsValid());
     if (a == null || a is FlutterLogoDecoration) {
       assert(a == null || a.debugAssertIsValid());
-      return FlutterLogoDecoration.lerp(a, this, t);
+      return FlutterLogoDecoration.lerp(a as FlutterLogoDecoration?, this, t);
     }
-    return super.lerpFrom(a, t);
+    return super.lerpFrom(a, t) as FlutterLogoDecoration?;
   }
 
   @override
-  FlutterLogoDecoration lerpTo(Decoration b, double t) {
+  FlutterLogoDecoration? lerpTo(Decoration? b, double t) {
     assert(debugAssertIsValid());
     if (b == null || b is FlutterLogoDecoration) {
       assert(b == null || b.debugAssertIsValid());
-      return FlutterLogoDecoration.lerp(this, b, t);
+      return FlutterLogoDecoration.lerp(this, b as FlutterLogoDecoration?, t);
     }
-    return super.lerpTo(b, t);
+    return super.lerpTo(b, t) as FlutterLogoDecoration?;
   }
 
   @override
   // ignore: todo
   // TODO(ianh): better hit testing
-  bool hitTest(Size size, Offset position, {TextDirection textDirection}) =>
+  bool hitTest(Size size, Offset position, {TextDirection? textDirection}) =>
       true;
 
   @override
-  BoxPainter createBoxPainter([VoidCallback onChanged]) {
+  BoxPainter createBoxPainter([VoidCallback? onChanged]) {
     assert(debugAssertIsValid());
     return _FlutterLogoPainter(this);
   }
@@ -302,7 +292,7 @@ class FlutterLogoDecoration extends Decoration {
   @override
   int get hashCode {
     assert(debugAssertIsValid());
-    return hashValues(
+    return Object.hash(
       lightColor,
       darkColor,
       textColor,
@@ -317,17 +307,17 @@ class FlutterLogoDecoration extends Decoration {
     properties
         .add(DiagnosticsNode.message('$lightColor/$darkColor on $textColor'));
     properties.add(EnumProperty<FlutterLogoStyle>('style', style));
-    if (_inTransition)
+    if (_inTransition) {
       properties.add(DiagnosticsNode.message(
           'transition ${debugFormatDouble(_position)}:${debugFormatDouble(_opacity)}'));
+    }
   }
 }
 
 /// An object that paints a [BoxDecoration] into a canvas.
 class _FlutterLogoPainter extends BoxPainter {
   _FlutterLogoPainter(this._config)
-      : assert(_config != null),
-        assert(_config.debugAssertIsValid()),
+      : assert(_config.debugAssertIsValid()),
         super(null) {
     _prepareText();
   }
@@ -335,8 +325,8 @@ class _FlutterLogoPainter extends BoxPainter {
   final FlutterLogoDecoration _config;
 
   // these are configured assuming a font size of 100.0.
-  TextPainter _textPainter;
-  Rect _textBoundingRect;
+  late TextPainter _textPainter;
+  Rect? _textBoundingRect;
 
   void _prepareText() {
     const String kLabel = 'Flutter';
@@ -382,9 +372,9 @@ class _FlutterLogoPainter extends BoxPainter {
 
     // Set up the styles.
     final Paint lightPaint = Paint()
-      ..color = _config.lightColor.withOpacity(0.8);
-    final Paint mediumPaint = Paint()..color = _config.lightColor;
-    final Paint darkPaint = Paint()..color = _config.darkColor;
+      ..color = _config.lightColor!.withOpacity(0.8);
+    final Paint mediumPaint = Paint()..color = _config.lightColor!;
+    final Paint darkPaint = Paint()..color = _config.darkColor!;
 
     final ui.Gradient triangleGradient = ui.Gradient.linear(
       const Offset(87.2623 + 37.9092, 28.8384 + 123.4389),
@@ -499,8 +489,8 @@ class _FlutterLogoPainter extends BoxPainter {
 
   @override
   void paint(Canvas canvas, Offset offset, ImageConfiguration configuration) {
-    offset += _config.margin.topLeft;
-    final Size canvasSize = _config.margin.deflateSize(configuration.size);
+    offset += _config.margin!.topLeft;
+    final Size canvasSize = _config.margin!.deflateSize(configuration.size!);
     if (canvasSize.isEmpty) return;
     Size logoSize;
     if (_config._position > 0.0) {
@@ -545,7 +535,7 @@ class _FlutterLogoPainter extends BoxPainter {
       logoTargetSquare = centerSquare;
     }
     final Rect logoSquare =
-        Rect.lerp(centerSquare, logoTargetSquare, _config._position.abs());
+        Rect.lerp(centerSquare, logoTargetSquare, _config._position.abs())!;
 
     if (_config._opacity < 1.0) {
       canvas.saveLayer(
@@ -572,12 +562,12 @@ class _FlutterLogoPainter extends BoxPainter {
                     fontSize; // 32 is the distance from the text bounding box edge to the left edge of the F when the font size is 350
         final double
             initialLeftTextPosition = // position of text when just starting the animation
-            rect.width / 2.0 - _textBoundingRect.width * scale;
+            rect.width / 2.0 - _textBoundingRect!.width * scale;
         final Offset textOffset = Offset(
           rect.left +
               ui.lerpDouble(initialLeftTextPosition, finalLeftTextPosition,
-                  _config._position),
-          rect.top + (rect.height - _textBoundingRect.height * scale) / 2.0,
+                  _config._position)!,
+          rect.top + (rect.height - _textBoundingRect!.height * scale) / 2.0,
         );
         canvas.save();
         if (_config._position < 1.0) {
@@ -605,19 +595,19 @@ class _FlutterLogoPainter extends BoxPainter {
           canvas.save();
         }
         canvas.translate(
-          logoTargetSquare.center.dx - (_textBoundingRect.width * scale / 2.0),
+          logoTargetSquare.center.dx - (_textBoundingRect!.width * scale / 2.0),
           logoTargetSquare.bottom,
         );
         canvas.scale(scale, scale);
         _textPainter.paint(canvas, Offset.zero);
         if (_config._position > -1.0) {
           canvas.drawRect(
-            _textBoundingRect.inflate(_textBoundingRect.width * 0.5),
+            _textBoundingRect!.inflate(_textBoundingRect!.width * 0.5),
             Paint()
               ..blendMode = BlendMode.modulate
               ..shader = ui.Gradient.linear(
-                Offset(_textBoundingRect.width * -0.5, 0.0),
-                Offset(_textBoundingRect.width * 1.5, 0.0),
+                Offset(_textBoundingRect!.width * -0.5, 0.0),
+                Offset(_textBoundingRect!.width * 1.5, 0.0),
                 <Color>[
                   const Color(0xFFFFFFFF),
                   const Color(0xFFFFFFFF),

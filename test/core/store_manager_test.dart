@@ -34,7 +34,7 @@ void main() {
 
       final storePlugins = await PluginStoreManager().fetchStorePlugins();
 
-      expect(storePlugins.length, 2);
+      expect(storePlugins?.length, 2);
     });
 
     test('store minimal toolbar switch, expect bool', () async {

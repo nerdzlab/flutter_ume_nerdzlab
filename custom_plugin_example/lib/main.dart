@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_ume/flutter_ume.dart';
+
 import 'custom_log.dart';
 
 void main() {
-  runApp(injectUMEWidget(child: MyApp(), enable: true));
+  runApp(UMEWidget(child: MyApp()));
   PluginManager.instance..register(CustomLog());
 }
 
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -58,7 +59,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ),
                 Text(
                   '$_counter',
-                  style: Theme.of(context).textTheme.display1,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
               ],
             ),
@@ -72,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       _hasTapped
                           ? 'Open \nCustomLog \nto view log'
                           : 'Tap here 👉',
-                      style: Theme.of(context).textTheme.display1,
+                      style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(width: 80)
                   ])),

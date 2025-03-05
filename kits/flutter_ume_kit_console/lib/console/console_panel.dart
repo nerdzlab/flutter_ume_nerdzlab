@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:share/share.dart';
-import 'package:tuple/tuple.dart';
 import 'package:flutter_ume/flutter_ume.dart';
-import 'package:flutter_ume_kit_console/console/console_manager.dart';
-import 'package:flutter_ume_kit_console/console/icon.dart' as icon;
 import 'package:flutter_ume/util/floating_widget.dart';
 import 'package:flutter_ume/util/store_mixin.dart';
+import 'package:flutter_ume_kit_console/console/console_manager.dart';
+import 'package:flutter_ume_kit_console/console/icon.dart' as icon;
 import 'package:flutter_ume_kit_console/console/show_date_time_style.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:tuple/tuple.dart';
 
 class Console extends StatefulWidget implements PluggableWithStream {
   Console({Key? key}) {
@@ -259,6 +259,6 @@ class ConsoleState extends State<Console>
       return;
     }
     final l = _logList.map((e) => '${e.item1.toString()} ${e.item2}').toList();
-    return Share.share("${l.join('\n')}");
+    Share.share("${l.join('\n')}");
   }
 }

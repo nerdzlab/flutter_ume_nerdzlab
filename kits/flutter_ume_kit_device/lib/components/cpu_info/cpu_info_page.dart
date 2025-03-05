@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:system_info/system_info.dart';
 import 'package:flutter_ume/flutter_ume.dart';
-import 'icon.dart' as icon;
 import 'package:platform/platform.dart';
+import 'package:system_info2/system_info2.dart';
+
+import 'icon.dart' as icon;
 
 class CpuInfoPage extends StatefulWidget implements Pluggable {
   CpuInfoPage({Key? key, this.child, this.platform = const LocalPlatform()})
@@ -99,7 +100,7 @@ class _CpuInfoPageState extends State<CpuInfoPage> {
       },
     ]);
 
-    final processors = SysInfo.processors;
+    final processors = SysInfo.cores;
     deviceInfo.add(
       {'Number of processors': '${processors.length}'},
     );

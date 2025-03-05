@@ -1,7 +1,8 @@
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:platform/platform.dart';
 import 'package:flutter_ume/flutter_ume.dart';
+import 'package:platform/platform.dart';
+
 import 'icon.dart' as icon;
 
 class DeviceInfoPanel extends StatefulWidget implements Pluggable {
@@ -82,7 +83,7 @@ class _DeviceInfoPanelState extends State<DeviceInfoPanel> {
       'tags': build.tags,
       'type': build.type,
       'isPhysicalDevice': build.isPhysicalDevice,
-      'androidId': build.androidId
+      'androidId': build.name
     };
   }
 

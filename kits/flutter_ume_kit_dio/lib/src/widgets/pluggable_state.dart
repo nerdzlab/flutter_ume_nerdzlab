@@ -119,44 +119,43 @@ class DioPluggableState extends State<DioInspector> {
         style: Theme.of(context).textTheme.bodyMedium,
         child: Align(
           alignment: Alignment.bottomCenter,
-          child: Container(
-            constraints: BoxConstraints.tightFor(
-              width: double.maxFinite,
-              height: MediaQuery.of(context).size.height / 1.25,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.vertical(
-                top: Radius.circular(20),
+          child: SafeArea(
+            bottom: false,
+            child: Container(
+              constraints: BoxConstraints.tightFor(
+                width: double.maxFinite,
+                height: MediaQuery.of(context).size.height,
               ),
-              color: Theme.of(context).cardColor,
-            ),
-            child: Column(
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Row(
-                    children: <Widget>[
-                      const Spacer(),
-                      Text(
-                        'Dio Requests',
-                        style: Theme.of(context).textTheme.displayMedium,
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: AlignmentDirectional.centerEnd,
-                          child: _clearAllButton(context),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+              ),
+              child: Column(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(12.0),
+                    child: Row(
+                      children: <Widget>[
+                        Text(
+                          'Dio Requests',
+                          style: Theme.of(context).textTheme.displaySmall,
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: Align(
+                            alignment: AlignmentDirectional.centerEnd,
+                            child: _clearAllButton(context),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: ColoredBox(
-                    color: Theme.of(context).canvasColor,
-                    child: _itemList(context),
+                  Expanded(
+                    child: ColoredBox(
+                      color: Theme.of(context).canvasColor,
+                      child: _itemList(context),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

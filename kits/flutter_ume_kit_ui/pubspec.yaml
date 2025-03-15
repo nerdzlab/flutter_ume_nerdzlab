@@ -13,17 +13,17 @@ dependencies:
   flutter_ume:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
-  touch_indicator: ^2.0.0
+  touch_indicator: any
 
   # for Cyclop
-  image: ^4.5.3
-  quiver: ^3.2.2
-  basics: ">=0.6.0 <0.11.0"
+  image: any
+  quiver: any
+  basics: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.3.2
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

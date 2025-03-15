@@ -1,4 +1,4 @@
-name: flutter_ume_kit_channel_monitor
+name: flutter_resizeble_devices
 description: channel monitor kit for flutter_ume
 version: 0.0.1
 homepage: https://github.com/nerdzlab/flutter_ume_nerdzlab
@@ -14,7 +14,7 @@ dependencies:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
-  rxdart: any
+  device_preview: ^1.2.0
 
 dev_dependencies:
   flutter_test:

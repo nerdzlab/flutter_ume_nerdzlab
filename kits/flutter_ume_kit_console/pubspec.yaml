@@ -10,9 +10,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  tuple: ^2.0.2
-  share_plus: ^10.1.4
-  shared_preferences: ^2.5.2
+  tuple: any
+  share_plus: any
+  shared_preferences: any
   flutter_ume:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
@@ -20,7 +20,7 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

@@ -1,5 +1,7 @@
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_ume/flutter_ume.dart';
 import 'package:platform/platform.dart';
 
@@ -7,8 +9,12 @@ import 'icon.dart' as icon;
 
 class DeviceInfoPanel extends StatefulWidget implements Pluggable {
   final Platform platform;
+  final String accessToken;
 
-  const DeviceInfoPanel({this.platform = const LocalPlatform()});
+  const DeviceInfoPanel({
+    this.platform = const LocalPlatform(),
+    required this.accessToken,
+  });
 
   @override
   _DeviceInfoPanelState createState() => _DeviceInfoPanelState();
@@ -48,12 +54,24 @@ class _DeviceInfoPanelState extends State<DeviceInfoPanel> {
       IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
       dataMap = _readIosDeviceInfo(iosDeviceInfo);
     }
+    var token = await _addFcmToken();
+    dataMap.addAll(token);
+    dataMap['accessToken'] = widget.accessToken;
     StringBuffer buffer = StringBuffer();
     dataMap.forEach((k, v) {
       buffer.write('$k:  $v\n');
     });
     _content = buffer.toString();
     setState(() {});
+  }
+
+  _addFcmToken() async {
+    try {
+      var token = await FirebaseMessaging.instance.getToken() ?? '';
+      return {'fcmToken': token};
+    } catch (_) {
+      return {'fcmToken': 'empty'};
+    }
   }
 
   Map<String, dynamic> _readAndroidBuildData(AndroidDeviceInfo build) {
@@ -117,22 +135,38 @@ class _DeviceInfoPanelState extends State<DeviceInfoPanel> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Container(
-              padding: const EdgeInsets.only(bottom: 8),
-              child: Text(
-                'Device Info',
-                textScaleFactor: 1.15,
-                style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.red),
-              )),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: Text(
+                  'Device Info',
+                  textScaleFactor: 1.15,
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.red),
+                ),
+              ),
+              IconButton(
+                onPressed: () async {
+                  await Clipboard.setData(ClipboardData(text: _content));
+                  await HapticFeedback.vibrate();
+                },
+                icon: Icon(
+                  Icons.copy,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
           Container(
             constraints: BoxConstraints(
                 maxHeight: MediaQuery.of(context).size.height - 150),
             child: SingleChildScrollView(
               physics: BouncingScrollPhysics(),
-              child: Text(_content,
+              child: SelectableText(_content,
                   style: const TextStyle(
                     fontSize: 15,
                     color: Colors.white,

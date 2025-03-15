@@ -14,12 +14,12 @@ dependencies:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
-  dio: ^5.8.0
+  dio: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

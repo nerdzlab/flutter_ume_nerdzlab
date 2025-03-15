@@ -23,8 +23,10 @@ class _HomePageState extends State<HomePage> {
         title: Text(widget.title!),
         actions: [
           IconButton(
-            onPressed: () => context.read<UMESwitch>().trigger(),
-            icon: Icon(context.read<UMESwitch>().enable
+            onPressed: () {
+              context.read<UMESwitch>().trigger();
+            },
+            icon: Icon(context.watch<UMESwitch>().enable
                 ? Icons.light
                 : Icons.light_sharp),
           ),

@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_ume/core/ui/icon_cache.dart';
 import 'package:flutter_ume/core/pluggable_message_service.dart';
 import 'package:flutter_ume/core/red_dot.dart';
 import 'package:flutter_ume/core/store_manager.dart';
-import 'package:flutter_ume/flutter_ume.dart';
-import 'dragable_widget.dart';
+import 'package:flutter_ume/core/ui/icon_cache.dart';
 import 'package:flutter_ume/core/ui/panel_action_define.dart';
+import 'package:flutter_ume/flutter_ume.dart';
+
+import 'dragable_widget.dart';
 
 class MenuPage extends StatefulWidget {
   MenuPage({Key? key, this.action, this.minimalAction, this.closeAction})
@@ -76,48 +77,36 @@ class _MenuPageState extends State<MenuPage>
           children: <Widget>[
             Container(
               color: Colors.white,
-              height: 100,
+              height: 80,
               width: MediaQuery.of(context).size.width,
               alignment: Alignment.bottomLeft,
               padding: const EdgeInsets.only(left: 16, right: 16),
-              margin: const EdgeInsets.only(bottom: 10),
+              margin: const EdgeInsets.only(bottom: 10, top: 10),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Row(
-                    children: [
-                      InkWell(
-                          onTap: () {
-                            if (widget.closeAction != null) {
-                              widget.closeAction!();
-                            }
-                          },
-                          child: const CircleAvatar(
-                            radius: 10,
-                            backgroundColor: Color(0xffff5a52),
-                          )),
-                      const SizedBox(
-                        width: 8,
-                      ),
-                      InkWell(
-                          onTap: () {
-                            if (widget.minimalAction != null) {
-                              widget.minimalAction!();
-                            }
-                          },
-                          child: const CircleAvatar(
-                            radius: 10,
-                            backgroundColor: Color(0xffe6c029),
-                          )),
-                    ],
+                  InkWell(
+                    onTap: () {
+                      if (widget.closeAction != null) {
+                        widget.closeAction!();
+                      }
+                    },
+                    child: const CircleAvatar(
+                      radius: 10,
+                      backgroundColor: Color(0xffff5a52),
+                    ),
                   ),
                   Container(
-                      child: Text('UME',
-                          style: const TextStyle(
-                              fontSize: 60,
-                              fontWeight: FontWeight.w800,
-                              color: Color(0xff454545)))),
+                    child: Text(
+                      'UME Nerdzlab',
+                      style: const TextStyle(
+                        fontSize: 40,
+                        fontWeight: FontWeight.w800,
+                        color: Color(0xff454545),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

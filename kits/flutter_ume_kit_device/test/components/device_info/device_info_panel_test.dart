@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter_ume/core/ui/global.dart';
 import 'package:flutter_ume_kit_device/components/device_info/device_info_panel.dart';
+
 import '../../mock_classes.dart';
 
 void main() {
   group('DeviceInfoPanel', () {
     test('Pluggable', () {
-      final pluggable = DeviceInfoPanel();
+      final pluggable = DeviceInfoPanel(
+        accessToken: 'dasdasdsa',
+      );
       final widget = pluggable.buildWidget(MockContext());
       final name = pluggable.name;
       final onTrigger = pluggable.onTrigger;
@@ -81,7 +83,10 @@ void main() {
     testWidgets('DeviceInfoPanel pump widget, Android', (tester) async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final deviceInfoPage = DeviceInfoPanel(platform: MockAndroidPlatform());
+      final deviceInfoPage = DeviceInfoPanel(
+        platform: MockAndroidPlatform(),
+        accessToken: '',
+      );
 
       await tester.pumpWidget(MaterialApp(
           key: rootKey,
@@ -95,7 +100,10 @@ void main() {
     testWidgets('DeviceInfoPanel pump widget, iOS', (tester) async {
       WidgetsFlutterBinding.ensureInitialized();
 
-      final deviceInfoPage = DeviceInfoPanel(platform: MockIOSPlatform());
+      final deviceInfoPage = DeviceInfoPanel(
+        platform: MockIOSPlatform(),
+        accessToken: '',
+      );
 
       await tester.pumpWidget(MaterialApp(
           key: rootKey,

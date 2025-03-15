@@ -4,8 +4,8 @@ version: 1.0.0
 homepage: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
-  flutter: ">=2.0.0"
+  sdk: ">=2.12.0 <4.0.0"
+  flutter: ">=2.12.0"
 
 dependencies:
   flutter:
@@ -13,14 +13,14 @@ dependencies:
   flutter_ume:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
-  share_plus: ^10.1.4
+  share_plus: any
   vm_service: ^14.2.5
-  string_scanner: ^1.2.0
+  string_scanner: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

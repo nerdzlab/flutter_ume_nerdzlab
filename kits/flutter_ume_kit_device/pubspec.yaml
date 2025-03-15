@@ -13,14 +13,18 @@ dependencies:
   flutter_ume:
     git:
       url: https://github.com/nerdzlab/flutter_ume_nerdzlab
-  system_info2: ^4.0.0
-  device_info_plus: ^11.3.0
-  platform: ^3.1.6
+  system_info2: any
+  device_info_plus: any
+  platform: any
+  firebase_messaging: any
+  get_storage: ^2.1.1
+  shared_preferences: ^2.5.2
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

@@ -1,7 +1,7 @@
 name: flutter_ume_kit_device
 description: Device info kit for flutter_ume.
 version: 1.0.0
-homepage: https://github.com/bytedance/flutter_ume
+homepage: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,15 +10,21 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_ume: ">=1.0.0 <2.0.0"
-  system_info: ^1.0.1
-  device_info: ^2.0.2
-  platform: ^3.0.0
+  flutter_ume:
+    git:
+      url: https://github.com/nerdzlab/flutter_ume_nerdzlab
+  system_info2: any
+  device_info_plus: any
+  platform: any
+  firebase_messaging: any
+  get_storage: ^2.1.1
+  shared_preferences: ^2.5.2
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

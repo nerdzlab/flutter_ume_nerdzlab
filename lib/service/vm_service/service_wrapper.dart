@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:isolate';
+
 import 'package:vm_service/utils.dart';
 import 'package:vm_service/vm_service.dart' as vm;
 import 'package:vm_service/vm_service_io.dart';
@@ -13,7 +14,7 @@ class ServiceWrapper {
     if (_isolateId != null) {
       return _isolateId;
     }
-    _isolateId = Service.getIsolateID(Isolate.current);
+    _isolateId = Service.getIsolateId(Isolate.current);
     return _isolateId;
   }
 
@@ -25,7 +26,7 @@ class ServiceWrapper {
     String url = info.serverUri.toString();
     Uri uri = Uri.parse(url);
     Uri socketUri = convertToWebSocketUrl(serviceProtocolUrl: uri);
-    _service = await vmServiceConnectUri(socketUri.toString());
+    _service = await vmServiceConnectUri('ws://127.0.0.1:8181/ws');
     return _service!;
   }
 

@@ -1,7 +1,7 @@
 name: flutter_ume_kit_dio
 description: Dio kit for flutter_ume.
 version: 1.0.0
-homepage: https://github.com/bytedance/flutter_ume
+homepage: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -10,14 +10,16 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_ume: ">=1.0.0 <2.0.0"
+  flutter_ume:
+    git:
+      url: https://github.com/nerdzlab/flutter_ume_nerdzlab
 
-  dio: ^4.0.0
+  dio: any
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  mockito: ^5.0.12
+  mockito: any
   flutter_coverage_badge:
     git:
       url: https://github.com/smileShirely/flutter_coverage_badge.git

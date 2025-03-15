@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart'
     hide FlutterLogo, FlutterLogoDecoration, FlutterLogoStyle;
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_ume/core/pluggable.dart';
 import 'package:flutter_ume/core/pluggable_message_service.dart';
-import 'package:flutter_ume/core/ui/panel_action_define.dart';
 import 'package:flutter_ume/core/plugin_manager.dart';
 import 'package:flutter_ume/core/red_dot.dart';
 import 'package:flutter_ume/core/store_manager.dart';
-import 'package:flutter_ume/core/ui/toolbar_widget.dart';
-import 'package:flutter_ume/core/pluggable.dart';
+import 'package:flutter_ume/core/ui/panel_action_define.dart';
 import 'package:flutter_ume/util/binding_ambiguate.dart';
 import 'package:flutter_ume/util/constants.dart';
-import './menu_page.dart';
 import 'package:flutter_ume/util/flutter_logo.dart';
+
+import './menu_page.dart';
 import 'global.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 const defaultLocalizationsDelegates = const [
   GlobalMaterialLocalizations.delegate,
@@ -218,7 +218,6 @@ class _ContentPageState extends State<_ContentPage> {
   Widget? _menuPage;
   BuildContext? _context;
 
-  bool _minimalContent = true;
   Widget? _toolbarWidget;
 
   void dragEvent(DragUpdateDetails details) {
@@ -260,17 +259,12 @@ class _ContentPageState extends State<_ContentPage> {
     }
     _currentSelected = null;
     _currentWidget = _empty;
-    if (_minimalContent) {
-      _currentWidget = _toolbarWidget;
-      _showedMenu = true;
-    }
     setState(() {});
   }
 
   void _updatePanelWidget() {
     setState(() {
-      _currentWidget =
-          _showedMenu ? (_minimalContent ? _toolbarWidget : _menuPage) : _empty;
+      _currentWidget = _showedMenu ? _menuPage : _empty;
     });
   }
 
@@ -313,11 +307,6 @@ class _ContentPageState extends State<_ContentPage> {
       _dy = y;
       setState(() {});
     });
-    _storeManager.fetchMinimalToolbarSwitch().then((value) {
-      setState(() {
-        _minimalContent = value ?? true;
-      });
-    });
     _dx = _windowSize.width - dotSize.width - margin * 4;
     _dy = _windowSize.height - dotSize.height - bottomDistance;
     MenuAction itemTapAction = (pluginData) async {
@@ -346,21 +335,8 @@ class _ContentPageState extends State<_ContentPage> {
     _menuPage = MenuPage(
       action: itemTapAction,
       minimalAction: () {
-        _minimalContent = true;
         _updatePanelWidget();
         PluginStoreManager().storeMinimalToolbarSwitch(true);
-      },
-      closeAction: () {
-        _showedMenu = false;
-        _updatePanelWidget();
-      },
-    );
-    _toolbarWidget = ToolBarWidget(
-      action: itemTapAction,
-      maximalAction: () {
-        _minimalContent = false;
-        _updatePanelWidget();
-        PluginStoreManager().storeMinimalToolbarSwitch(false);
       },
       closeAction: () {
         _showedMenu = false;

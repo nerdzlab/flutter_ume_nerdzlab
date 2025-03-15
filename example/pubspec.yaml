@@ -9,9 +9,9 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  provider: ^6.0.3
+  provider: any
   # For Dio Kit
-  dio: ^4.0.0
+  dio: any
   flutter_ume: 0.2.1
   flutter_ume_kit_ui: 0.2.1
   flutter_ume_kit_perf: 0.2.1
@@ -19,16 +19,21 @@ dependencies:
   flutter_ume_kit_device: 0.2.1
   flutter_ume_kit_console: 0.2.1
   flutter_ume_kit_dio: 0.2.0
+  flutter_resizeble_devices:
+    path: ../kits/flutter_resizeble_devices
+
+  shake_detector: ^0.1.1
+  get_storage: ^2.1.1
 
 dependency_overrides:
-  vm_service: ^9.4.0
+  vm_service: any
   flutter_ume:
     path: ../
 
 dev_dependencies:
   flutter_driver:
     sdk: flutter
-  test: ^1.16.6
+  test: any
   flutter_ume:
     path: ../
   flutter_ume_kit_ui:

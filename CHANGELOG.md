@@ -75,6 +75,10 @@
 
 * Adapted Null-Safety.
 
+## [0.1.1]
+
+* 移除独立的 MaterialApp Widget
+
 ## [0.1.0+1]
 
 * Add some docs comments, modify description in pubspec.yaml.

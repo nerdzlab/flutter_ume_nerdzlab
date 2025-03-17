@@ -110,8 +110,8 @@ class _GetStorageItemState extends State<GetStorageItem> {
 
   @override
   void initState() {
-    textEditingController =
-        TextEditingController(text: widget.getStorage.read(widget.valueKey));
+    var value = widget.getStorage.read(widget.valueKey)?.toString() ?? '';
+    textEditingController = TextEditingController(text: value);
     super.initState();
   }
 

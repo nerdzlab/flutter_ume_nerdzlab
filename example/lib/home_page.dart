@@ -92,6 +92,20 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.abc),
+          label: '111',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.access_alarm),
+          label: 'www',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.add),
+          label: '222',
+        ),
+      ]),
     );
   }
 }

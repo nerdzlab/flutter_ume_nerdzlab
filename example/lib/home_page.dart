@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:dio/dio.dart';
 import 'package:example/ume_switch.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ume/flutter_ume.dart';
+import 'package:flutter_ume_kit_console/console/console_print.dart';
 import 'package:provider/provider.dart';
 
 import 'main.dart';
@@ -45,6 +48,24 @@ class _HomePageState extends State<HomePage> {
                 debugPrint('statement');
               },
               child: const Text('debugPrint'),
+            ),
+            TextButton(
+              onPressed: () {
+                print('print');
+              },
+              child: const Text('Print'),
+            ),
+            TextButton(
+              onPressed: () {
+                log('bbbbb');
+              },
+              child: const Text('log'),
+            ),
+            TextButton(
+              onPressed: () {
+                consolePrint('consolePrint');
+              },
+              child: const Text('loger'),
             ),
             TextButton(
               onPressed: () {

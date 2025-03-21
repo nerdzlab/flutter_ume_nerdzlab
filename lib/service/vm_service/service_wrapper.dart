@@ -26,7 +26,7 @@ class ServiceWrapper {
     String url = info.serverUri.toString();
     Uri uri = Uri.parse(url);
     Uri socketUri = convertToWebSocketUrl(serviceProtocolUrl: uri);
-    _service = await vmServiceConnectUri('ws://127.0.0.1:8181/ws');
+    _service = await vmServiceConnectUri(socketUri.toString());
     return _service!;
   }
 

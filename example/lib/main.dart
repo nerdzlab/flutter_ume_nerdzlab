@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart';
 import 'package:example/custom_router_pluggable.dart';
 import 'package:example/detail_page.dart';
@@ -8,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_resizeble_devices/flutter_resizeble_devices.dart';
 import 'package:flutter_ume/flutter_ume.dart';
 import 'package:flutter_ume_kit_channel_monitor/flutter_ume_kit_channel_monitor.dart';
+import 'package:flutter_ume_kit_console/console/console_manager.dart';
 import 'package:flutter_ume_kit_console/flutter_ume_kit_console.dart';
 import 'package:flutter_ume_kit_device/flutter_ume_kit_device.dart';
 import 'package:flutter_ume_kit_dio/flutter_ume_kit_dio.dart';
@@ -20,9 +23,21 @@ final Dio dio = Dio()
   ..options = BaseOptions(connectTimeout: Duration(milliseconds: 1000));
 
 void main() async {
-  await GetStorage.init();
+  await runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(const UMEApp());
+    await GetStorage.init();
+
+    ConsoleManager.redirectAllLogs();
+    runApp(const UMEApp());
+  }, (error, stackTrace) {
+    ConsoleManager.logMessage('ERROR: $error\n$stackTrace');
+  }, zoneSpecification: ZoneSpecification(
+    print: (self, parent, zone, line) {
+      ConsoleManager.logMessage(line);
+      parent.print(zone, line);
+    },
+  ));
 }
 
 class UMEApp extends StatefulWidget {

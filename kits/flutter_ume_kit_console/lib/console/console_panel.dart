@@ -12,7 +12,7 @@ import 'package:tuple/tuple.dart';
 
 class Console extends StatefulWidget implements PluggableWithStream {
   Console({Key? key}) {
-    ConsoleManager.redirectDebugPrint();
+    ConsoleManager.redirectAllLogs();
   }
 
   @override

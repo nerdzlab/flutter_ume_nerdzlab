@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_ume/flutter_ume.dart';
 import 'package:flutter_ume/util/constants.dart';
 import 'package:flutter_ume_kit_ui/components/hit_test.dart';
-import 'package:flutter_ume/flutter_ume.dart';
+
 import 'icon.dart' as icon;
 
 class AlignRuler extends StatefulWidget implements Pluggable {
@@ -186,7 +187,7 @@ class _AlignRulerState extends State<AlignRuler> {
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.only(left: 10),
-                    child: Text('开启后松手将会自动吸附至最近widget',
+                    child: Text('Automatically attach to the nearest widget.',
                         style: const TextStyle(
                             color: Colors.red, fontWeight: FontWeight.w500)),
                   ),

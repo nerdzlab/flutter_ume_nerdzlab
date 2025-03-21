@@ -21,7 +21,7 @@ void main() {
       expect(name, isNotEmpty);
       expect(onTrigger, isA<Function>());
       expect(imageProvider, isNotNull);
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
     testWidgets('Console pump widget', (tester) async {
       final console = Console();
@@ -32,7 +32,7 @@ void main() {
           )));
       await tester.pumpAndSettle();
       expect(console, isNotNull);
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
 
     testWidgets('Console pump widget, call debugPrint, change datetime style',
@@ -58,7 +58,7 @@ void main() {
         await tester.pumpAndSettle();
       }
 
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
 
     testWidgets('Console pump widget, call debugPrint, clear logs',
@@ -82,7 +82,7 @@ void main() {
 
       expect(ConsoleManager.logData.first.item2, 'UME CONSOLE == ClearLog');
 
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
 
     testWidgets('Console pump widget, call debugPrint, trigger filter',
@@ -113,7 +113,7 @@ void main() {
           widget is Icon && widget.icon == Icons.search && widget.size == 20));
       await tester.pumpAndSettle();
 
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
 
     testWidgets('Console pump widget, call debugPrint, share', (tester) async {
@@ -136,7 +136,7 @@ void main() {
       await tester.tap(find.byIcon(Icons.share));
       await tester.pumpAndSettle();
 
-      ConsoleManager.clearRedirect();
+      ConsoleManager.clearRedirects();
     });
   });
 }

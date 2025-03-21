@@ -55,7 +55,8 @@ class ShowCodeState extends State<ShowCode> with WidgetsBindingObserver {
   Widget _codeView() {
     String codeContent = code ?? '';
     if (_codeList != null && _codeList!.isNotEmpty && codeContent.isEmpty) {
-      codeContent = '已找到匹配项，请点击菜单选择';
+      codeContent =
+          'A match has been found, please click on the menu to select';
     }
     double _textScaleFactor = 1.0;
     final SyntaxHighlighterStyle style =
